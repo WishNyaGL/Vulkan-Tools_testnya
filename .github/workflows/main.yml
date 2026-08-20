@@ -32,11 +32,10 @@ jobs:
 
     - name: Build VkCube APK via Official Script
       run: |
+        sed -i 's/api_level = 23/api_level = 26/g' scripts/android.py
+        
         sudo mkdir -p /platforms/android-26
-        
         ANY_JAR=$(find $ANDROID_HOME/platforms/ -name "android.jar" | head -n 1)
-        echo "Using base jar from: $ANY_JAR"
-        
         sudo cp "$ANY_JAR" /platforms/android-26/android.jar
         
         export PATH="${{ steps.find-paths.outputs.build_tools_path }}:$PATH"
@@ -50,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: vkcube-apk
-        path: build-android/bin/*.apk
+        path: build-android/bin/VkCube.apk
