@@ -32,6 +32,8 @@ jobs:
 
     - name: Build VkCube APK via Official Script
       run: |
+        sudo ln -s $ANDROID_HOME/platforms /platforms
+        
         export PATH="${{ steps.find-paths.outputs.build_tools_path }}:$PATH"
         
         python3 scripts/android.py --config Release --app-abi 'arm64-v8a' --app-stl c++_shared --apk
