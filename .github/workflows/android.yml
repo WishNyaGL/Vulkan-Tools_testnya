@@ -1,0 +1,34 @@
+name: Build Android VkCube
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x cube/android/gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
+      working-directory: cube/android
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: vkcube-apk
+        path: cube/android/app/build/outputs/apk/debug/*.apk
